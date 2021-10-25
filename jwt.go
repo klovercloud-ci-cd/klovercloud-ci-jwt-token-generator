@@ -1,9 +1,9 @@
 package main
+
 import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
-	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/klovercloud-ci/config"
 	"log"
@@ -17,7 +17,7 @@ type Jwt struct {
 func (j Jwt) GenerateToken(duration int64, data interface{}) (string, error) {
 	token := jwt.New(jwt.SigningMethodRS512)
 	token.Claims = jwt.MapClaims{
-		"exp": fmt.Sprintf("%v", duration)+"h",
+		"exp": time.Duration(duration) * time.Hour,
 		"iat": time.Now().Unix(),
 		"data":data,
 	}

@@ -28,7 +28,7 @@ func GenerateTokenCommand()*cobra.Command {
 	return &cobra.Command{
 		Use: "generate-jwt",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			token, err :=	Jwt{}.GenerateToken(10000,nil)
+			token, err :=	Jwt{}.GenerateToken(1000000,nil)
 			if err != nil {
 				cmd.Println("[ERROR]: ", err.Error())
 			}
