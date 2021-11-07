@@ -10,11 +10,11 @@ func main(){
 	config.InitEnvironmentVariables()
 	cli()
 }
-
 func cli(){
 	cmd := &cobra.Command{
 		Use:          "kcpctl",
-		Short:        "Generate Jwt token from keys!",
+		Short:        "Cli to use kloverCloud platform apis!",
+		Version:      "v1",
 		SilenceUsage: true,
 	}
 	cmd.AddCommand(GenerateTokenCommand())
@@ -27,8 +27,9 @@ func cli(){
 func GenerateTokenCommand()*cobra.Command {
 	return &cobra.Command{
 		Use: "generate-jwt",
+		Short:        "Generate token with public and private key",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			token, err :=	Jwt{}.GenerateToken(1000000,nil)
+			token, err := Jwt{}.GenerateToken(1000000, nil)
 			if err != nil {
 				cmd.Println("[ERROR]: ", err.Error())
 			}

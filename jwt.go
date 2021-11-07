@@ -21,26 +21,24 @@ func (j Jwt) GenerateToken(duration int64, data interface{}) (string, error) {
 		"iat": time.Now().Unix(),
 		"data":data,
 	}
-	tokenString, err := token.SignedString(config.PrivateKey)
+	tokenString, err := token.SignedString(j.GetPrivateKey(config.PrivateKey))
 	if err != nil {
 		return "",err
 	}
 	return tokenString,nil
 }
-func(Jwt) GetPrivateKey() *rsa.PrivateKey {
-	block,_ := pem.Decode([]byte(config.PrivateKey))
-
+func(Jwt) GetPrivateKey(key string) *rsa.PrivateKey {
+	block,_ := pem.Decode([]byte(key))
 	privateKeyImported, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
 		log.Print(err.Error())
 		panic(err)
 	}
-
 	return privateKeyImported
 }
 
-func(Jwt) GetPublicKey() *rsa.PublicKey {
-	block, _ := pem.Decode([]byte(config.Publickey))
+func(Jwt) GetPublicKey(key string) *rsa.PublicKey {
+	block, _ := pem.Decode([]byte(key))
 	publicKeyImported, err := x509.ParsePKCS1PublicKey(block.Bytes)
 
 	if err != nil {
