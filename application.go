@@ -4,13 +4,14 @@ import (
 	"github.com/klovercloud-ci/config"
 	"github.com/spf13/cobra"
 	"os"
+	"strings"
 )
 
-func main(){
+func main() {
 	config.InitEnvironmentVariables()
 	cli()
 }
-func cli(){
+func cli() {
 	cmd := &cobra.Command{
 		Use:          "kcpctl",
 		Short:        "Cli to use kloverCloud platform apis!",
@@ -24,12 +25,25 @@ func cli(){
 	}
 }
 
-func GenerateTokenCommand()*cobra.Command {
+func GenerateTokenCommand() *cobra.Command {
 	return &cobra.Command{
-		Use: "generate-jwt",
-		Short:        "Generate token with public and private key",
+		Use:       "generate-jwt",
+		Short:     "Generate token with public and private key",
+		ValidArgs: []string{},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			token, err := Jwt{}.GenerateToken(1000000, nil)
+			type AgentStruct struct {
+				Name string `json:"name"`
+			}
+			var agent AgentStruct
+			for idx, _ := range args {
+				if strings.Contains(strings.ToLower(args[idx]), "agent=") {
+					strs := strings.Split(strings.ToLower(args[idx]), "=")
+					if len(strs) > 1 {
+						agent.Name = strs[1]
+					}
+				}
+			}
+			token, err := Jwt{}.GenerateToken(1000000, agent)
 			if err != nil {
 				cmd.Println("[ERROR]: ", err.Error())
 			}
