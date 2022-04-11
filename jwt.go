@@ -54,10 +54,14 @@ func (Jwt) GetPrivateKey() *rsa.PrivateKey {
 
 func (Jwt) GetPublicKey() *rsa.PublicKey {
 	block, _ := pem.Decode([]byte(config.Publickey))
-	publicKeyImported, err := x509.ParsePKCS1PublicKey(block.Bytes)
+	pkey, err := x509.ParsePKIXPublicKey(block.Bytes)
 	if err != nil {
-		log.Print(err.Error())
 		panic(err)
 	}
-	return publicKeyImported
+
+	rsaKey, ok := pkey.(*rsa.PublicKey)
+	if !ok {
+		log.Fatalf("got unexpected key type: %T", pkey)
+	}
+	return rsaKey
 }
