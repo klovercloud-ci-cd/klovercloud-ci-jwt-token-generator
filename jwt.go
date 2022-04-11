@@ -42,7 +42,7 @@ func (j Jwt) GenerateToken(duration int64, data interface{}) (string, error) {
 func (Jwt) GetPrivateKey() *rsa.PrivateKey {
 	block, rest := pem.Decode([]byte(config.PrivateKey))
 	if rest != nil {
-		log.Print(rest)
+		log.Print("key:", string(rest))
 	}
 	privateKeyImported, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
