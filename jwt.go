@@ -40,16 +40,19 @@ func (j Jwt) GenerateToken(duration int64, data interface{}) (string, error) {
 	return tokenString, nil
 }
 func (Jwt) GetPrivateKey() *rsa.PrivateKey {
-	block, rest := pem.Decode([]byte(config.PrivateKey))
-	if rest != nil {
-		log.Print("key:", string(rest))
-	}
-	privateKeyImported, err := x509.ParsePKCS1PrivateKey(block.Bytes)
+	block, _ := pem.Decode([]byte(config.PrivateKey))
+	key, err := x509.ParsePKCS8PrivateKey(block.Bytes)
 	if err != nil {
-		log.Print(err.Error())
-		panic(err)
+		return nil
 	}
-	return privateKeyImported
+
+	rsaKey, ok := key.(*rsa.PrivateKey)
+	if !ok {
+		return nil
+
+	} else {
+		return rsaKey
+	}
 }
 
 func (Jwt) GetPublicKey() *rsa.PublicKey {
