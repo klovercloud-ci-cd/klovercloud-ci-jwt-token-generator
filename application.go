@@ -36,7 +36,7 @@ func GenerateTokenCommand() *cobra.Command {
 			}
 			var agent AgentStruct
 			for idx, _ := range args {
-				if strings.Contains(strings.ToLower(args[idx]), "agent=") {
+				if strings.Contains(strings.ToLower(args[idx]), "client=") {
 					strs := strings.Split(strings.ToLower(args[idx]), "=")
 					if len(strs) > 1 {
 						agent.Name = strs[1]
