@@ -41,30 +41,20 @@ func (j Jwt) GenerateToken(duration int64, data interface{}) (string, error) {
 }
 func (Jwt) GetPrivateKey() *rsa.PrivateKey {
 	block, _ := pem.Decode([]byte(config.PrivateKey))
-	key, err := x509.ParsePKCS8PrivateKey(block.Bytes)
+	key, err := x509.ParsePKCS1PrivateKey(block.Bytes)
 	if err != nil {
-		return nil
+		log.Print(err.Error())
+		panic(err)
 	}
-
-	rsaKey, ok := key.(*rsa.PrivateKey)
-	if !ok {
-		return nil
-
-	} else {
-		return rsaKey
-	}
+	return key
 }
 
 func (Jwt) GetPublicKey() *rsa.PublicKey {
 	block, _ := pem.Decode([]byte(config.Publickey))
-	pkey, err := x509.ParsePKIXPublicKey(block.Bytes)
+	pkey, err := x509.ParsePKCS1PublicKey(block.Bytes)
 	if err != nil {
+		log.Print(err.Error())
 		panic(err)
 	}
-
-	rsaKey, ok := pkey.(*rsa.PublicKey)
-	if !ok {
-		log.Fatalf("got unexpected key type: %T", pkey)
-	}
-	return rsaKey
+	return pkey
 }
