@@ -12,6 +12,7 @@ var RunMode string
 
 func InitEnvironmentVariables() {
 	RunMode = os.Getenv("RUN_MODE")
+	log.Println("[INFO] Run mode: ", RunMode)
 	if RunMode == "" {
 		RunMode = string(DEVELOP)
 	}
