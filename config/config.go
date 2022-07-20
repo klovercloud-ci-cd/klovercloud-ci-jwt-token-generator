@@ -28,9 +28,9 @@ func InitEnvironmentVariables() {
 	PrivateKey = os.Getenv("PRIVATE_KEY_INTERNAL_CALL")
 	Publickey = os.Getenv("PUBLIC_KEY_INTERNAL_CALL")
 	
-	log.Println(PrivateKey)
+	log.Println("PrivateKey:"+PrivateKey)
 	
-	log.Println(Publickey)
+	log.Println("Publickey:"+Publickey)
 }
 
 // ENVIRONMENT run environment
