@@ -27,6 +27,10 @@ func InitEnvironmentVariables() {
 	log.Println("RUN MODE:", RunMode)
 	PrivateKey = os.Getenv("PRIVATE_KEY_INTERNAL_CALL")
 	Publickey = os.Getenv("PUBLIC_KEY_INTERNAL_CALL")
+	
+	log.Println(PrivateKey)
+	
+	log.Println(Publickey)
 }
 
 // ENVIRONMENT run environment
